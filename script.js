@@ -79,7 +79,7 @@ function addTask() {
 
     const btnDelete = document.createElement('button');
     btnDelete.setAttribute('data-action', 'delete');
-    btnDelete.textContent = "x";
+    btnDelete.textContent = "✕";
     btnDelete.classList.add("btndelete");
 
     li.appendChild(span);
