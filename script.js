@@ -8,6 +8,46 @@ const toggle = document.querySelector("#toggle-dark-place");
 const body = document.querySelector('#body');
 const toDo = document.querySelector('#todo');
 
+let tasksToDo = [];
+
+
+function loadTasksFromStorage() {
+    const saved = localStorage.getItem('tasksToDo');
+    if (!saved) return; // Если ничего не сохранено — выходим
+
+    tasksToDo = JSON.parse(saved); // Преобразуем строку в массив
+
+    tasksToDo.forEach((task) => {
+        // Создаём <li> и элементы внутри
+        const li = document.createElement("li");
+        const span = document.createElement("span");
+        span.textContent = task.text;
+
+        if (task.done) {
+            li.classList.add("done"); // Отмечаем выполненные
+        }
+
+        const btnDone = document.createElement("button");
+        btnDone.setAttribute("data-action", "done");
+        btnDone.textContent = "Готово";
+        btnDone.classList.add("btndone");
+
+        const btnDelete = document.createElement("button");
+        btnDelete.setAttribute("data-action", "delete");
+        btnDelete.textContent = "x";
+        btnDelete.classList.add("btndelete");
+
+        li.appendChild(span);
+        li.appendChild(btnDone);
+        li.appendChild(btnDelete);
+
+        list.appendChild(li); // Добавляем задачу в <ul>
+    });
+
+    updateCounter(); // Обновляем счётчик задач
+}
+
+loadTasksFromStorage();
 
 toggle.addEventListener("click", () => {
     body.classList.toggle("dark");
@@ -25,14 +65,12 @@ toggle.addEventListener("click", () => {
 
 
 function addTask() {
-
+    const taskText = input.value.trim(); // сначала сохраняем текст
+    if (taskText === "") return;
 
     const li = document.createElement("li");
     const span = document.createElement("span");
-
-    span.textContent = input.value;
-    if (input.value.trim() === "") return;
-
+    span.textContent = taskText;
 
     const btnDone = document.createElement('button');
     btnDone.setAttribute('data-action', 'done');
@@ -40,20 +78,23 @@ function addTask() {
     btnDone.classList.add("btndone");
 
     const btnDelete = document.createElement('button');
-    btnDelete.setAttribute('data-action', 'delete')
+    btnDelete.setAttribute('data-action', 'delete');
     btnDelete.textContent = "x";
     btnDelete.classList.add("btndelete");
-
 
     li.appendChild(span);
     li.appendChild(btnDone);
     li.appendChild(btnDelete);
 
-
     list.appendChild(li);
+
     input.value = "";
     updateCounter();
+
+    tasksToDo.push({ text: taskText, done: false });
+    localStorage.setItem('tasksToDo', JSON.stringify(tasksToDo));
 }
+
 
 addTodoBtn.addEventListener('click', addTask);
 
@@ -68,19 +109,34 @@ input.addEventListener('keydown', (e) => {
 list.addEventListener("click", (e) => {
     const action = e.target.dataset.action;
     if (!action) return;
+
     const li = e.target.closest('li');
+    const text = li.querySelector('span').textContent;
 
     if (action === 'done') {
         li.classList.add('done');
-        updateCounter();
+        list.appendChild(li);
+        // Находим задачу в массиве и обновляем её статус
+        const task = tasksToDo.find(task => task.text === text);
+        if (task) {
+            task.done = true;
+            localStorage.setItem('tasksToDo', JSON.stringify(tasksToDo));
+        }
 
+        updateCounter();
     }
+
     if (action === "delete") {
         li.remove();
-        updateCounter();
 
+
+        tasksToDo = tasksToDo.filter(task => task.text !== text);
+        localStorage.setItem('tasksToDo', JSON.stringify(tasksToDo));
+
+        updateCounter();
     }
-})
+});
+
 function updateCounter() {
     const counter = document.querySelector('[data-counter]');
     const tasks = list.querySelectorAll('li');
