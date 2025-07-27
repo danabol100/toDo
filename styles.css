@@ -6,7 +6,8 @@ input {}
 
 body {
     /* background-color: rgb(241, 235, 235); */
-    background-color: rgb(192, 183, 183);
+    /* background-color: rgb(192, 183, 183); */
+    background-image: url(accets/4.webp);
     position: relative;
     margin: 0 auto;
     padding-top: 50px;
@@ -127,10 +128,10 @@ body {
     background-color: rgb(0, 0, 0);
 }
 
-/* .dark button {
-    color: rgb(0, 0, 0);
-    background-color: aliceblue;
-} */
+.dark button {
+    color: rgb(246, 245, 245);
+    background-color: rgb(46, 33, 33);
+}
 
 .ul {
     margin: 20px;
@@ -162,8 +163,10 @@ body {
 
 
 .dark .btndone {
-    background-color: rgb(236, 231, 231);
-    color: rgb(1, 1, 1);
+    color: rgb(246, 245, 245);
+    background-color: rgb(46, 33, 33);
+    /* background-color: rgb(236, 231, 231);
+    color: rgb(1, 1, 1); */
     box-shadow: 0px 5px 10px 2px rgba(238, 240, 241, 0.2) inset;
 
     border: 1px solid #060606;
@@ -242,7 +245,7 @@ span {
 }
 
 .done span {
-    color: rgb(240, 112, 69);
+    color: rgb(12, 12, 12);
     text-decoration: line-through;
     opacity: 0.8;
 }
