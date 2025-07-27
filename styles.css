@@ -178,8 +178,7 @@ body {
     border: 1px solid #000000;
     width: 20px;
     height: 20px;
-
-
+    color: #000000;
 }
 
 .btndelete:hover {
@@ -263,6 +262,7 @@ span {
         position: absolute;
         top: -1px;
         left: 140px;
+        color: #000000;
     }
 
     .btndone {
